@@ -2,13 +2,13 @@ version: '3'
 
 services:
   app:
-    build: 
-      context: .
-      dockerfile: Dockerfile
+    image: golang:1.11
     volumes:
       - .:/accounts-client
+    working_dir: /accounts-client
     depends_on:
       - accountapi
+    command: bash -c "pwd && go mod download && go get -d -v && go test -v ./... && go build -v -o accounts-client"
   accountapi:
     image: form3tech/interview-accountapi:v1.0.0-4-g63cf8434
     restart: on-failure

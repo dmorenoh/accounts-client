@@ -3,8 +3,6 @@ package accountsclient
 import (
 	"bytes"
 	"encoding/json"
-
-	"github.com/dmorenoh/accounts-client/utils"
 )
 
 type AccountClassificationType string
@@ -29,6 +27,7 @@ func (req *CreateAccountRequest) toBuffer() *bytes.Buffer {
 }
 
 type CreateAccountCommand struct {
+	ID                      string
 	Country                 string
 	BaseCurrency            string
 	BankID                  string
@@ -81,48 +80,17 @@ type Attributes struct {
 	Status                  string   `json:"status"`
 }
 
-// type CreateAccountRequest struct {
-// 	OrganisationID string     `json:"organisation_id"`
-// 	Type           string     `json:"type"`
-// 	ID             string     `json:"id"`
-// 	Attributes     Attributes `json:"attributes"`
-// }
-
 func (req *CreateAccountRequest) toJSON() *bytes.Buffer {
 	buf := new(bytes.Buffer)
 	json.NewEncoder(buf).Encode(req)
 	return buf
 }
 
-// func NewCreateAccountRequest(cmd CreateAccountCommand) CreateAccountRequest {
-
-// 	ceateAccountRequest := CreateAccountRequest{
-// 		OrganisationID: MyOrganizationID,
-// 		Type:           AccountType,
-// 		ID:             utils.NewUUID(),
-// 		Attributes: Attributes{
-// 			Country:                 cmd.Country,
-// 			BaseCurrency:            cmd.BaseCurrency,
-// 			BankID:                  cmd.BankID,
-// 			BankIDCode:              cmd.BankIDCode,
-// 			Bic:                     cmd.Bic,
-// 			Name:                    cmd.Name,
-// 			CustomerID:              cmd.CustomerID,
-// 			AccountClassification:   string(cmd.AccountClassification),
-// 			JointAccount:            cmd.JointAccount,
-// 			AccountMatchingOptOut:   cmd.AccountMatchingOptOut,
-// 			SecondaryIdentification: cmd.SecondaryIdentification,
-// 			Switched:                cmd.Switched,
-// 		},
-// 	}
-// 	return ceateAccountRequest
-// }
-
 func (cmd *CreateAccountCommand) toRequest() CreateAccountRequest {
 	newAccountResource := AccountResource{
 		OrganisationID: MyOrganizationID,
 		Type:           AccountType,
-		ID:             utils.NewUUID(),
+		ID:             cmd.ID,
 		Attributes: Attributes{
 			Country:                 cmd.Country,
 			BaseCurrency:            cmd.BaseCurrency,

@@ -10,7 +10,7 @@ import (
 
 // BaseURLV1 : base url v1
 const (
-	BaseURLV1        = "http://localhost:8080/v1/organisation"
+	BaseURLV1        = "http://accountapi:8080/v1/organisation"
 	MyOrganizationID = "eb0bd6f5-c3f5-44b2-b677-acd23cdde73c"
 	AccountType      = "accounts"
 )
@@ -21,16 +21,6 @@ type Client struct {
 	HTTPClient *http.Client
 }
 
-func NewAccountApiClient() *Client {
-
-	return &Client{
-		baseURL: BaseURLV1,
-		HTTPClient: &http.Client{
-			Timeout: time.Minute,
-		},
-	}
-}
-
 type successResponse struct {
 	Data interface{} `json:"data"`
 }
@@ -38,6 +28,16 @@ type successResponse struct {
 type errorResponse struct {
 	Code    int    `json:"code"`
 	Message string `json:"error_message"`
+}
+
+func NewAccountAPIClient() *Client {
+
+	return &Client{
+		baseURL: BaseURLV1,
+		HTTPClient: &http.Client{
+			Timeout: time.Minute,
+		},
+	}
 }
 
 func (er *errorResponse) Error() string {

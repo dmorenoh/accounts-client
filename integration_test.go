@@ -3,12 +3,15 @@ package accountsclient
 import (
 	"testing"
 
+	uuid "github.com/nu7hatch/gouuid"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestCreateAccountInvalidRequest(t *testing.T) {
 	// given a valid account creation request
+	u, _ := uuid.NewV4()
 	cmd := CreateAccountCommand{
+		ID:                    u.String(),
 		Country:               "GB",
 		BaseCurrency:          "GBP",
 		Name:                  "David Moreno",
@@ -16,7 +19,7 @@ func TestCreateAccountInvalidRequest(t *testing.T) {
 	}
 
 	// when request account creation
-	accountClient := NewAccountApiClient()
+	accountClient := NewAccountAPIClient()
 	res, err := accountClient.createAccount(cmd)
 
 	// then
@@ -27,7 +30,9 @@ func TestCreateAccountInvalidRequest(t *testing.T) {
 
 func TestCreateAccountValidRequest(t *testing.T) {
 	// given a valid account creation request
+	u, _ := uuid.NewV4()
 	cmd := CreateAccountCommand{
+		ID:                    u.String(),
 		Country:               "GB",
 		BaseCurrency:          "GBP",
 		Name:                  "David Moreno",
@@ -35,7 +40,7 @@ func TestCreateAccountValidRequest(t *testing.T) {
 	}
 
 	// when request account creation
-	accountClient := NewAccountApiClient()
+	accountClient := NewAccountAPIClient()
 	res, err := accountClient.createAccount(cmd)
 
 	// then
@@ -50,14 +55,16 @@ func TestCreateAccountValidRequest(t *testing.T) {
 func TestFetchExistingAccount(t *testing.T) {
 
 	// given an existing account
+	u, _ := uuid.NewV4()
 	req := CreateAccountCommand{
+		ID:                    u.String(),
 		Country:               "GB",
 		BaseCurrency:          "GBP",
 		Name:                  "David Moreno",
 		AccountClassification: "Personal",
 	}
 
-	accountClient := NewAccountApiClient()
+	accountClient := NewAccountAPIClient()
 	res, _ := accountClient.createAccount(req)
 
 	// when fetching this account
@@ -70,7 +77,7 @@ func TestFetchExistingAccount(t *testing.T) {
 func TestFetchNonExistigAccount(t *testing.T) {
 
 	// when fetching this account
-	accountClient := NewAccountApiClient()
+	accountClient := NewAccountAPIClient()
 	res, err := accountClient.fetchAccount("1111")
 
 	assert.Nil(t, res, "Not null")
@@ -80,7 +87,7 @@ func TestFetchNonExistigAccount(t *testing.T) {
 
 func TestListAccounts(t *testing.T) {
 
-	accountClient := NewAccountApiClient()
+	accountClient := NewAccountAPIClient()
 	pageOpt := PageOptions{
 		Number: 0,
 		Size:   100,
@@ -93,14 +100,16 @@ func TestListAccounts(t *testing.T) {
 func TestDeleteExisitingAccount(t *testing.T) {
 
 	// given an existing account
+	u, _ := uuid.NewV4()
 	req := CreateAccountCommand{
+		ID:                    u.String(),
 		Country:               "GB",
 		BaseCurrency:          "GBP",
 		Name:                  "David Moreno",
 		AccountClassification: "Personal",
 	}
 
-	accountClient := NewAccountApiClient()
+	accountClient := NewAccountAPIClient()
 	res, _ := accountClient.createAccount(req)
 
 	resf, _ := accountClient.fetchAccount(res.ID)
