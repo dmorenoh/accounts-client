@@ -1,7 +1,7 @@
 # accounts-client
 Welcome to my account-api client version 
-**Name:** David Moreno
-**No previous experience with Go** 
+ - **Name:** David Moreno
+ - **No previous experience with Go** 
 
 
 # Testing 
